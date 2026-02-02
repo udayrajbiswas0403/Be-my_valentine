@@ -72,10 +72,10 @@
             background: linear-gradient(135deg, #e74c3c, #c0392b);
             color: white;
             box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+            transition: transform 0.3s ease, padding 0.3s ease, font-size 0.3s ease;
         }
 
         .btn-yes:hover {
-            transform: scale(1.1);
             box-shadow: 0 6px 20px rgba(231, 76, 60, 0.6);
         }
 
@@ -84,6 +84,7 @@
             color: white;
             position: absolute;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
         }
 
         .success-screen {
@@ -189,8 +190,10 @@
             heartsBg.appendChild(heart);
         }
 
-        // Make No button run away
+        // Make No button run away and Yes button grow
         let escapeAttempts = 0;
+        const yesBtn = document.querySelector('.btn-yes');
+        let yesBtnSize = 1;
 
         noBtn.addEventListener('mouseenter', runAway);
         noBtn.addEventListener('touchstart', runAway);
@@ -199,6 +202,10 @@
         function runAway(e) {
             e.preventDefault();
             escapeAttempts++;
+
+            // Make Yes button grow bigger each time
+            yesBtnSize += 0.15;
+            yesBtn.style.transform = `scale(${yesBtnSize})`;
 
             const maxX = window.innerWidth - noBtn.offsetWidth - 20;
             const maxY = window.innerHeight - noBtn.offsetHeight - 20;
@@ -218,6 +225,10 @@
 
             noBtn.style.left = newX + 'px';
             noBtn.style.top = newY + 'px';
+
+            // Make No button shrink
+            const noScale = Math.max(0.5, 1 - (escapeAttempts * 0.08));
+            noBtn.style.transform = `scale(${noScale})`;
 
             // Funny messages after several attempts
             const messages = [
